@@ -1,6 +1,8 @@
 # PB-RAG-ASISTENTE-TARIFAS-ATM-BCN
 Asistente de tarifas y abonos para la red ATM de Barcelona - sistema tarifario integrado que permite utilizar diferentes medios de transporte (metro, autobuses, Ferrocarrils y Rodalies). No es asistente de rutas, solo tarifas y abonos. Solo asiste tarifas de a ATM, no asiste tarifas de medio de transporte individual.
 
+## Estructura del proyecto
+
 ```text
 PB-RAG-ASISTENTE-TARIFAS-ATM-BCN/
 ├── README.md
@@ -25,14 +27,9 @@ PB-RAG-ASISTENTE-TARIFAS-ATM-BCN/
 └── chroma/ o output/       # índice (gitignored)
 ```
 
-# Proceso de desarrollo
+## Corpus
 
-* Paso 1: Decisión de asistente.
-* Paso 2: Descubrimiento de donde extraer datos.
-* Paso 3: Extracción de datos.
-* Paso 4: Curado de datos y transformación final para su uso.
-
-# Datos
+Descripción de los ficheros y documentos incluidos en el corpues y de donde se han extraido.
 
 | Nº | Fichero | Fuente |
 |---------|-----------|--------------|
@@ -47,5 +44,37 @@ PB-RAG-ASISTENTE-TARIFAS-ATM-BCN/
 | 9 | `25_Otros_titulos_integrados_y_sus_tarifas.pdf` | [tarifas TMB](https://www.tmb.cat/es/tarifas-metro-bus-barcelona/precios-titulos-transporte) y [tarifas ATM](https://www.atm.cat/es/titols-tarifes/titols-i-tarifes/titols-principals)|
 | 10 | `31_Condiciones_de_uso_titulos_transporte.pdf` | [Condiciones uso](https://www.tmb.cat/es/tarifas-metro-bus-barcelona/condiciones-uso-billetes) |
 | 11 | `32_Preguntas_frecuentes.pdf` | [FAQ](https://www.tmb.cat/es/atencion-al-cliente/preguntas-frecuentes) |
+
+## Proceso de desarrollo
+En este apartado se describe como ha sido el proceso de construcción del proyecto, desde la primera toma de decisón hasta la entrega final.
+
+### Paso 1: ¿Que va a hacer el proyecto y cual será el corpus?
+
+El proyecto consistirá en un asistente de tarifas y abonos para la red ATM (Autoridad de Transporte Metropolitano) de Barcelona que se encarga de gestionar el sistema tarifario integrado que permite utilizar diferentes medios de transporte (metro, autobuses, tranvía, Ferrocarrils y Rodalies) de la Gran Area Metropolitana de Barceelona.
+
+El objetivo del asistente es que sea capaz de recomendar el abono a escoger según los datos, de edad, ubicació de destino, ubicación origen, además de poder responder preguntas sobre condiciones de uso.
+
+No es un asitente de rutas. Solo de tarifas y abonos. Si bien será capaz de responder cual es el abono a adquirir en trayectos entre dos ciudades dentro de la red, no es capaz de devolver ni la mejor ruta, ni información sobre paradas. Igualmente el asistente dará información basada en la zona de cada parada (origen y destino), pero es posible que exista una ruta que requiera pasar por menos zonas pudiendo adquirir un billete más barato.
+
+Dado que la red integrada de ATM está directamente relacionada con TMB (Transporte Metropolitáno de Barcelona) que depende de AMB (Área Metropolitana de Barcelona), se incluirá información de esta última para darle consistencia al asistente, pero el objetivo del mismo es dar información sobre billetes integrados, y no sobre los billetes NO integrados de la redes particulares de FCG (Ferrocarriles Catalanes de la Generalitat), Rodalías (Cercanías de Cataluña), Tramvia y Autobuses (ni metropolitanos, urbanos o interurbanos).
+
+El motivo de no incluir información de paradas o de los billetes no integrados es para no complicar el proyecto y no tener un corpus que supere los 20 documentos estipulados por la academía.
+
+### Paso 2: Descubrimiento y extracción de datos.
+
+Si bien existen páginas [developer.tmb.cat](https://developer.tmb.cat/) o [opendata-ajuntament.barcelona.cat](http://opendata-ajuntament.barcelona.cat/), la información que devuelve es muy específica sobre paradas, líneas o incidencias y no se han utilizado.
+
+Finalmente las fuentes más fiables y desde donde se ha podido recopilar toda la información son:
+
+* https://www.tmb.cat
+* https://www.atm.cat
+  
+### Paso 3: Curado de datos y transformación final para su uso.
+
+Se ha generado un csv con la lista de municipios incluidos dentro del ATM, la zona a la que pertenen y el sector (que hace que aún siendo de la misma implicará comprar billete de varios sectores), otra con la lista de municipios de que están incluidas dentro de la tarifa metropolitan aún siendo de sectores diferentes, y un csv con los abonos y sus tarifas según sector.
+
+Además se incluye pdf con la explicación de como funciona el sistema tarifario y la tarifa metropolitana. Documento con explicación de cada uno de los abonos. Documento con condiciones de uso general y documento con preguntas frecuentes.
+
+
 
 
