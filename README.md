@@ -31,6 +31,8 @@ PB-RAG-ASISTENTE-TARIFAS-ATM-BCN/
 
 Descripción de los ficheros y documentos incluidos en el corpues y de donde se han extraido.
 
+Todos los datos son públicos.
+
 | Nº | Fichero | Fuente |
 |---------|-----------|--------------|
 | 1 | `01_Municipios_por_zona.csv` | [mapa-zonas](https://www.tmb.cat/es/tarifas-metro-bus-barcelona/mapa-zonas) |
@@ -74,6 +76,32 @@ Finalmente las fuentes más fiables y desde donde se ha podido recopilar toda la
 Se ha generado un csv con la lista de municipios incluidos dentro del ATM, la zona a la que pertenen y el sector (que hace que aún siendo de la misma implicará comprar billete de varios sectores), otra con la lista de municipios de que están incluidas dentro de la tarifa metropolitan aún siendo de sectores diferentes, y un csv con los abonos y sus tarifas según sector.
 
 Además se incluye pdf con la explicación de como funciona el sistema tarifario y la tarifa metropolitana. Documento con explicación de cada uno de los abonos. Documento con condiciones de uso general y documento con preguntas frecuentes.
+
+### Paso 4: main.py
+Se genera el main.py con los parametros de entrada esperados según lo solicitado:
+
+```text
+  python main.py --prepare                  # Ingesta + embeddings
+  python main.py --index                    # Indexar en ChromaDB
+  python main.py --index --recreate-index   # Borra la colección de ChromaDB antes de indexar
+  python main.py --query "pregunta"         # Pregunta de prueba (retrieval + contexto)
+  python main.py --ask "pregunta"           # RAG completo: respuesta generada
+  ```
+
+
+
+
+## Q&A: Preguntas de ejemplo y resultado esperado
+
+En este apartado se describe una serie de preguntas a realizar al asistente y el resultado esperado.
+
+| Nº | Pregunta | Respuesta esperada |
+|---------|-----------|--------------|
+| 1 | TBD | TBD|
+| 2 | TBD | TBD|
+| 3 | TBD | TBD|
+| 4 | TBD | TBD|
+| 5 | TBD | TBD|
 
 
 
