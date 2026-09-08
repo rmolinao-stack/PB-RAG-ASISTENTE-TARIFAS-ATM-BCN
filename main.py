@@ -6,6 +6,7 @@ Uso:
   python main.py --index --recreate-index   # Borra la colección de ChromaDB antes de indexar
   python main.py --query "pregunta"         # Pregunta de prueba (retrieval + contexto)
   python main.py --ask "pregunta"           # RAG completo: respuesta generada
+  python main.py --eval                     # Evaluación del retrieval con preguntas preestablecidas
 
 
 App Streamlit: streamlit run app.py
@@ -26,13 +27,14 @@ def main() -> None:
     parser.add_argument("--recreate-index", action="store_true", help="Borra la colección de ChromaDB antes de indexar")
     parser.add_argument("--query", type=str, help="Pregunta de prueba (retrieval + contexto)")
     parser.add_argument("--ask", type=str, help="RAG completo: respuesta generada")
+    parser.add_argument("--eval", action="store_true", help="Evaluación del retrieval con preguntas preestablecidas")
     parser.add_argument("--top-k", type=int, default=None, help="Sobreescribe TOP-K")
     
 
     args = parser.parse_args()
 
     if not any(
-        [args.prepare, args.index, args.recreate_index, args.query, args.ask]
+        [args.prepare, args.index, args.recreate_index, args.query, args.ask, args.eval]
     ):
         parser.print_help()
         print(
@@ -55,6 +57,9 @@ def main() -> None:
     if args.ask:
         print("ask")
         #_cmd_ask(args.ask, args.top_k)
+    if args.eval:
+        print("eval")
+        #_cmd_eval()
     
 
 if __name__ == "__main__":
