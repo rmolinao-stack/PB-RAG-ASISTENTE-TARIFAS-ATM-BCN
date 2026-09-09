@@ -2,8 +2,4 @@
 __pycache__/
 *.pyc
 .env
-
-# Pendiente revisar
-output/chunks.json
-output/embeddings.json
-output/chroma_db/
+output/
