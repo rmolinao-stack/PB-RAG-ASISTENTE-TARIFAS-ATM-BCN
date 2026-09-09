@@ -97,8 +97,16 @@ Se genera el main.py con los parametros de entrada esperados según lo solicitad
   python main.py --ask "pregunta"           # RAG completo: respuesta generada
   ```
 
-### Paso 4: main.py
+### Paso 5: se reestructuran las carpetas por responsabilidad
 
+Ver estructura del proyecto.
+
+### Paso 6: Se programa la ingesta
+
+Se programa la Ingesta y el embeding que se ejecuta mediante: python main.py --prepare
+
+* Se llama a ejecutar_ingesta() de pipeline.py, que su vez llama a las funciones de load.py para crear una lista de documentos cargados.
+  * **TBD: cargar_csv particularizado para los 3 csv del corpus.**
 
 
 ## Q&A: Preguntas de ejemplo y resultado esperado
