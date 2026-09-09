@@ -10,21 +10,30 @@ PB-RAG-ASISTENTE-TARIFAS-ATM-BCN/
 ├── .env.example
 ├── .gitignore
 ├── config.py
-├── main.py                 # CLI: prepare / index / query / ask
-├── app.py                  # Streamlit
-├── src/
+├── main.py                   # CLI: prepare / index / query / ask.
+├── app.py                    # Streamlit.
+├── common/                   # Carpeta donde guardamos ficheros comunes como comfig o utils.
+│   ├── config.py             # Se definen parametros generales del sistema.
+│   └── utils.py              # Funciones genéricas auxiliares y reutilizables.
+├── core/                     # Carpeta donde guardamos los ficheros de la capa de negocio.
+│   ├── pipeline.py           # Orquestador de la ingesta y otras llamadas.
 │   ├── load.py
 │   ├── chunk.py
 │   ├── embed.py
 │   ├── index.py
 │   ├── retrieve.py
-│   ├── generate.py
-│   └── logging_utils.py    # o equivalente
-├── data/                   # corpus (o instrucciones para descargarlo)
-├── queries/                # preguntas de evaluación
-├── entregables/            # informe final del equipo
+│   └── generate.py
+├── data/                     # Corpus
+├── entregables/              # informe final del equipo
 │   └── informe_decisiones.md
-└── chroma/ o output/       # índice (gitignored)
+├── llm/                      # Carpeta donde se encuentran los procesos particulares de llamadas a LLM.
+│   └── gemini_auth.py        # Carga de API key de gemini
+├── output/                   # Ficheros generados entre ellos el indice de chromaDB
+├── queries/                  # preguntas de evaluación
+└── services/                 # Carpeta donde se encuentras los servicios que llamara Streamlit u otros.
+    └── rag_service.py        # Servicios relacionados con RAG. 
+
+
 ```
 
 ## Corpus
@@ -88,6 +97,7 @@ Se genera el main.py con los parametros de entrada esperados según lo solicitad
   python main.py --ask "pregunta"           # RAG completo: respuesta generada
   ```
 
+### Paso 4: main.py
 
 
 

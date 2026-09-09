@@ -13,6 +13,13 @@ App Streamlit: streamlit run app.py
 """
 
 import argparse
+from core.pipeline import ejecutar_ingesta
+from core.embed import ejecutar_embeddings
+
+def preparar_ingesta_y_embeddings() -> None:
+    ejecutar_ingesta()
+    print()
+    ejecutar_embeddings()
 
 def main() -> None:
     parser = argparse.ArgumentParser(
@@ -47,6 +54,8 @@ def main() -> None:
 
     if args.prepare:
         print("prepare")
+        preparar_ingesta_y_embeddings()
+        
         #_cmd_prepare()
     if args.index:
         print("index")
