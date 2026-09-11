@@ -28,7 +28,7 @@ def main() -> None:
         (metro, autobuses, Ferrocarrils y Rodalies)
         """
     )
-    parser.add_argument("--prepare", action="store_true", help="Ingesta + embeddings")
+    parser.add_argument("--prepare", action="store_true", help="Ingesta + embeddings (tiempo estimado de ejecución ~ 10 min)")
     parser.add_argument("--index", action="store_true", help="Indexar en ChromaDB")
     parser.add_argument("--recreate-index", action="store_true", help="Borra la colección de ChromaDB antes de indexar")
     parser.add_argument("--query", type=str, help="Pregunta de prueba (retrieval + contexto)")

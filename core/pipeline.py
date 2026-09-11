@@ -72,9 +72,9 @@ def imprimir_resumen_consola(chunks: list[Document], stats: dict) -> None:
     #RMO: No mostramos los chunks de ejemplo para no saturar la consola.
     #if not chunks:
     #    return
-#
+
     #_mostrar_chunk_ejemplo("Muestra: primer chunk", chunks[0])
-#
+
     #for chunk in chunks:
     #    if chunk.metadata.get("tipo") == "Tarifas_por_zonan" or chunk.metadata.get("tipo") == "Municipios_por_zona":
     #        _mostrar_chunk_ejemplo("Muestra: medición CSV", chunk)

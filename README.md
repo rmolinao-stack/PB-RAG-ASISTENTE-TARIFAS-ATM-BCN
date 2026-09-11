@@ -103,19 +103,20 @@ Se genera el main.py con los parametros de entrada esperados según lo solicitad
 
 Ver estructura del proyecto.
 
-### Paso 6: Se programa la ingesta
+### Paso 6: Se programa la ingesta y el embedding
 
 Se programa la Ingesta y el embeding que se ejecuta mediante: python main.py --prepare
 
-Empezamos con la ingesta:
+**Empezamos con la ingesta del corpus**: Se llama a ejecutar_ingesta() de pipeline.py, que su vez llama a las funciones de load.py para crear una lista de documentos cargados.
+* Para los pdfs usamos PyPDFLoader de Langchain que coge el texto y genera el metadato. Para los CSVs lo construimos nosotros.
+  * En este primer pre-procesado los pdfs se parten por página, y los CSV por filas.
+* Hacemos la limpieza de datos.
+* Construimos los chunks, calculamos estadisticas y lo almacenamos como un json para su futuro uso.
 
-* Se llama a ejecutar_ingesta() de pipeline.py, que su vez llama a las funciones de load.py para crear una lista de documentos cargados.
-  * Para los pdfs usamos PyPDFLoader de Langchain que coge el texto y genera el metadato. Para los CSVs lo construimos nosotros.
-    * En este primer pre-procesado los pdfs se parten por página, y los CSV por filas.
-  * Hacemos la limpieza de datos.
-  * Construimos los chunks, calculamos estadisticas y lo almacenamos como un json para su futuro uso.
-  
-Continuamos con el embeding:
+**Continuamos con el embeding del corpus**: Se llama a ejecutar_embeddings() de embed.py.
+* Cargamos la API Key de google.
+* Cargamos todos los chunks y se los pasamos al modelo de embedding en paquetes para no saturar al LLM.
+  * **<span style="color:red;">NOTA IMPORTANTE:</span>** Entre llamada y del embedding se ha hecho un sleep de 60 segundos ya que he tenido muchos problemas. Este tiempo es parametrizable a través del parametro de sistema EMBEDDING_SLEEP.
 
 
 ## Q&A: Preguntas de ejemplo y resultado esperado
@@ -129,6 +130,12 @@ En este apartado se describe una serie de preguntas a realizar al asistente y el
 | 3 | TBD | TBD|
 | 4 | TBD | TBD|
 | 5 | TBD | TBD|
+
+## Cosas a mejorar del sistema
+
+1.- Separar el embedding del corpus de la ingesta y unificarlo con la indexación de la BBDD ChromaBD (por supuesto modularizadamente) y dejar de generar el fichero embedding.json ya que no solo no aporta nada sino que ocupa espacio. Igualmente hay que dejar la opción de regenerar indice por si hay cambios de parametros pero no de embbeding.
+
+2.- Ajustar el tiempo de sleep entre embbedings del corpus para que se más eficiente.
 
 
 
