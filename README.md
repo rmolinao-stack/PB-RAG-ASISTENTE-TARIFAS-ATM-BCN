@@ -112,11 +112,19 @@ Se programa la Ingesta y el embeding que se ejecuta mediante: python main.py --p
   * En este primer pre-procesado los pdfs se parten por página, y los CSV por filas.
 * Hacemos la limpieza de datos.
 * Construimos los chunks, calculamos estadisticas y lo almacenamos como un json para su futuro uso.
+* Se genera el fichero chunks.json para su uso en el embedding
 
-**Continuamos con el embeding del corpus**: Se llama a ejecutar_embeddings() de embed.py.
+**Continuamos con el embedding del corpus**: Se llama a ejecutar_embeddings() de embed.py.
 * Cargamos la API Key de google.
 * Cargamos todos los chunks y se los pasamos al modelo de embedding en paquetes para no saturar al LLM.
   * **<span style="color:red;">NOTA IMPORTANTE:</span>** Entre llamada y del embedding se ha hecho un sleep de 60 segundos ya que he tenido muchos problemas. Este tiempo es parametrizable a través del parametro de sistema EMBEDDING_SLEEP.
+* Finalmente se genera el fichero embedding.json para su uso a la hora de generar el indice de Chroma
+  * **Nota:** En un entorno de producción no se debería generar este fichero, y se tendría que pasar el resultado al indice de chroma, reunificando estas opciones. No obstante se ha mentenido así por seguir el esquema de la academía y sobre todo porque este sistema (y la estructura del código base) facilita la regeneración del indice sin tener que volver a llamar al embedding.
+
+### Paso 7: Se genera el indice en la BBDD ChromaDB
+
+A grandes rasgos recupera el fichero embedding.json con los indices y los carga en la BBDD ChromaDB.
+
 
 
 ## Q&A: Preguntas de ejemplo y resultado esperado

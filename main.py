@@ -15,10 +15,15 @@ App Streamlit: streamlit run app.py
 import argparse
 from core.pipeline import ejecutar_ingesta
 from core.embed import ejecutar_embeddings
+from core.index import ejecutar_indexacion
 
 def preparar_ingesta_y_embeddings() -> None:
     ejecutar_ingesta()
     ejecutar_embeddings()
+
+def indexar_en_chromadb(recreate: bool) -> None:
+    total = ejecutar_indexacion(recreate=recreate)
+    print(f"\nÍndice listo: {total} vectores en ChromaDB.")
 
 def main() -> None:
     parser = argparse.ArgumentParser(
@@ -54,11 +59,9 @@ def main() -> None:
     if args.prepare:
         print("prepare")
         preparar_ingesta_y_embeddings()
-        
-        #_cmd_prepare()
     if args.index:
         print("index")
-        #_cmd_index(recreate=args.recreate_index)
+        indexar_en_chromadb(recreate=args.recreate_index)
     if args.query:
         print("query")
         #_cmd_query(args.query, args.top_k)

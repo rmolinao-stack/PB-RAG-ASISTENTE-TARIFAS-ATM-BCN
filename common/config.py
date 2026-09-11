@@ -20,3 +20,8 @@ EXTENSIONES_TEXTO = {".txt", ".md"}
 EXTENSIONES_PDF = {".pdf"}
 EXTENSIONES_CSV = {".csv"}
 
+# --- Indexación Chroma ---
+CHROMA_DIR = OUTPUT_DIR / "chroma_db"
+COLLECTION_NAME = "tarifas_atm_bcn"
+INDEX_BATCH_SIZE = 100
+
