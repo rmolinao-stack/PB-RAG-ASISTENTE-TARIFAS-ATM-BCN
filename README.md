@@ -20,8 +20,8 @@ PB-RAG-ASISTENTE-TARIFAS-ATM-BCN/
 │   └── utils.py              # Funciones genéricas auxiliares y reutilizables.
 ├── core/                     # Carpeta donde guardamos los ficheros de la capa de negocio.
 │   ├── pipeline.py           # Orquestador de la ingesta y otras llamadas.
-│   ├── load.py
-│   ├── chunk.py
+│   ├── load.py               # Revisa los ficheros del corpues y lo carga con metadatos.
+│   ├── chunk.py              # Construye los chunks
 │   ├── embed.py
 │   ├── index.py
 │   ├── retrieve.py
@@ -107,9 +107,15 @@ Ver estructura del proyecto.
 
 Se programa la Ingesta y el embeding que se ejecuta mediante: python main.py --prepare
 
+Empezamos con la ingesta:
+
 * Se llama a ejecutar_ingesta() de pipeline.py, que su vez llama a las funciones de load.py para crear una lista de documentos cargados.
-  * Par los pdfs usamos PyPDFLoader de Langchain que coge el texto y genera el metadato. Para los CSVs lo construimos nosotros.
-* 
+  * Para los pdfs usamos PyPDFLoader de Langchain que coge el texto y genera el metadato. Para los CSVs lo construimos nosotros.
+    * En este primer pre-procesado los pdfs se parten por página, y los CSV por filas.
+  * Hacemos la limpieza de datos.
+  * Construimos los chunks, calculamos estadisticas y lo almacenamos como un json para su futuro uso.
+  
+Continuamos con el embeding:
 
 
 ## Q&A: Preguntas de ejemplo y resultado esperado

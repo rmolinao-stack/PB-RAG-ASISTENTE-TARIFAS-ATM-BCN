@@ -99,7 +99,6 @@ def cargar_archivo(ruta: Path) -> list[Document]:
 
     if sufijo in EXTENSIONES_PDF:
         return PyPDFLoader(str(ruta)).load()
-        pass
 
     if sufijo in EXTENSIONES_CSV:
         if (ruta.name == "01_Municipios_por_zona_y_tarifa_metropolitana.csv"):
