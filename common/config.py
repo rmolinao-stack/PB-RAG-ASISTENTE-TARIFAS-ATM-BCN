@@ -25,3 +25,6 @@ CHROMA_DIR = OUTPUT_DIR / "chroma_db"
 COLLECTION_NAME = "tarifas_atm_bcn"
 INDEX_BATCH_SIZE = 100
 
+# --- Retrieval---
+TOP_K = 5 # Número de resultados a recuperar en la búsqueda (retrieval)
+

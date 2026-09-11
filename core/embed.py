@@ -31,21 +31,23 @@ def embeddear_textos(client: genai.Client, textos: list[str]) -> list[list[float
     vectores: list[list[float]] = []
     loop = 0
     for inicio in range(0, len(textos), EMBED_BATCH_SIZE):
+        #RMO: La primera vez no esperamos, el resto sí.
+        if loop > 0:
+            time.sleep(EMBEDDING_SLEEP)
         print("Embeddings: lote", loop + 1, "de", (len(textos) + EMBED_BATCH_SIZE - 1) // EMBED_BATCH_SIZE)
         loop += 1
         lote = textos[inicio : inicio + EMBED_BATCH_SIZE]
         contents = [types.Content(parts=[types.Part(text=t)]) for t in lote]
         result = client.models.embed_content(
-            model=EMBEDDING_MODEL,
-            contents=contents,
-        )
+                    model=EMBEDDING_MODEL,
+                    contents=contents,
+                    )
         lote_vectores = [_extraer_vector(emb) for emb in result.embeddings]
         if len(lote_vectores) != len(lote):
             raise RuntimeError(
                 f"Se esperaban {len(lote)} embeddings, se recibieron {len(lote_vectores)}."
-            )
-        vectores.extend(lote_vectores)
-        time.sleep(EMBEDDING_SLEEP) 
+                )
+        vectores.extend(lote_vectores) 
     return vectores
 
 def embeddear_consulta(client: genai.Client, pregunta: str) -> list[float]:

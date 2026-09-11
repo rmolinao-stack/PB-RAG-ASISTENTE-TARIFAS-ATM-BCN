@@ -16,6 +16,8 @@ import argparse
 from core.pipeline import ejecutar_ingesta
 from core.embed import ejecutar_embeddings
 from core.index import ejecutar_indexacion
+from core.retriever import recuperar
+from core.context import imprimir_contexto
 
 def preparar_ingesta_y_embeddings() -> None:
     ejecutar_ingesta()
@@ -24,6 +26,10 @@ def preparar_ingesta_y_embeddings() -> None:
 def indexar_en_chromadb(recreate: bool) -> None:
     total = ejecutar_indexacion(recreate=recreate)
     print(f"\nÍndice listo: {total} vectores en ChromaDB.")
+
+def ejecutar_opcion_query(pregunta: str, top_k: int | None) -> None:
+    chunks = recuperar(pregunta, top_k=top_k)
+    imprimir_contexto(chunks)
 
 def main() -> None:
     parser = argparse.ArgumentParser(
@@ -36,8 +42,8 @@ def main() -> None:
     parser.add_argument("--prepare", action="store_true", help="Ingesta + embeddings (tiempo estimado de ejecución ~ 10 min)")
     parser.add_argument("--index", action="store_true", help="Indexar en ChromaDB")
     parser.add_argument("--recreate-index", action="store_true", help="Borra la colección de ChromaDB antes de indexar")
-    parser.add_argument("--query", type=str, help="Pregunta de prueba (retrieval + contexto)")
-    parser.add_argument("--ask", type=str, help="RAG completo: respuesta generada")
+    parser.add_argument("--query", type=str, help="Pregunta de prueba que solo ataca al retrieval (recuperación de contexto)")
+    parser.add_argument("--ask", type=str, help="Pregunta con respusta generada por el modelo (RAG completo)")
     parser.add_argument("--eval", action="store_true", help="Evaluación del retrieval con preguntas preestablecidas")
     parser.add_argument("--top-k", type=int, default=None, help="Sobreescribe TOP-K")
     
@@ -64,6 +70,7 @@ def main() -> None:
         indexar_en_chromadb(recreate=args.recreate_index)
     if args.query:
         print("query")
+        ejecutar_opcion_query(args.query, args.top_k)
         #_cmd_query(args.query, args.top_k)
     if args.ask:
         print("ask")

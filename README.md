@@ -125,6 +125,11 @@ Se programa la Ingesta y el embeding que se ejecuta mediante: python main.py --p
 
 A grandes rasgos recupera el fichero embedding.json con los indices y los carga en la BBDD ChromaDB.
 
+### Paso 8: Programación opción --query que devuelve los chunks guardados en BBDD por similitud de la pregunta
+
+Programación opción --query que devuelve los chunks guardados en BBDD por similitud de la pregunta.
+
+Básicamente se usa el mismo modelo de embedding que se usó para codificar chromaDB y devuelve los vectores con más similitud.
 
 
 ## Q&A: Preguntas de ejemplo y resultado esperado
