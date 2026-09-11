@@ -18,7 +18,6 @@ from core.embed import ejecutar_embeddings
 
 def preparar_ingesta_y_embeddings() -> None:
     ejecutar_ingesta()
-    print()
     ejecutar_embeddings()
 
 def main() -> None:

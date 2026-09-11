@@ -1,7 +1,11 @@
 # PB-RAG-ASISTENTE-TARIFAS-ATM-BCN
 Asistente de tarifas y abonos para la red ATM de Barcelona - sistema tarifario integrado que permite utilizar diferentes medios de transporte (metro, autobuses, Ferrocarrils y Rodalies). No es asistente de rutas, solo tarifas y abonos. Solo asiste tarifas de a ATM, no asiste tarifas de medio de transporte individual.
 
+Para calcular las zonas por las que pasa un trayecto redirigirá a https://www.atm.cat/es/titols-tarifes/sistema-de-transport/mapa-de-la-zonificacio
+
 ## Estructura del proyecto
+
+Si bien la modularización de ficheros es bastante similar a la propuesta por la academia, he seguido una paquetización diferente y más acorde con lo hecho en proyectos pasados realizados por mí.
 
 ```text
 PB-RAG-ASISTENTE-TARIFAS-ATM-BCN/
@@ -9,7 +13,6 @@ PB-RAG-ASISTENTE-TARIFAS-ATM-BCN/
 ├── requirements.txt
 ├── .env.example
 ├── .gitignore
-├── config.py
 ├── main.py                   # CLI: prepare / index / query / ask.
 ├── app.py                    # Streamlit.
 ├── common/                   # Carpeta donde guardamos ficheros comunes como comfig o utils.
@@ -44,17 +47,16 @@ Todos los datos son públicos.
 
 | Nº | Fichero | Fuente |
 |---------|-----------|--------------|
-| 1 | `01_Municipios_por_zona.csv` | [mapa-zonas](https://www.tmb.cat/es/tarifas-metro-bus-barcelona/mapa-zonas) |
-| 2 | `02_Municipios_tarifa_metropolitana.csv` | [mapa-zonas](https://www.tmb.cat/es/tarifas-metro-bus-barcelona/mapa-zonas) |
-| 3 | `11_Intro_sistema_tarifario_integrado.pdf` | [mapa-zonas](https://www.tmb.cat/es/tarifas-metro-bus-barcelona/mapa-zonas) |
-| 4 | `12_sistema_tarifario_integrado.pdf` | [sistema tarifario ATM](https://www.atm.cat/es/titols-tarifes/sistema-de-transport/funcionament-del-sistema-tarifari-integrat) |
-| 5 | `21_Tarifa_metropolitana.pdf` | [mapa-zonas](https://www.tmb.cat/es/tarifas-metro-bus-barcelona/mapa-zonas) |
-| 6 | `22_tarifas_transporte_abonos_normales.csv` | [tarifas TMB](https://www.tmb.cat/es/tarifas-metro-bus-barcelona/precios-titulos-transporte) y [tarifas ATM](https://www.atm.cat/es/titols-tarifes/titols-i-tarifes/titols-principals)|
-| 7 | `23_Descripcion_tipos_billetes_ATM.pdf` | [tarifas ATM](https://www.atm.cat/es/titols-tarifes/titols-i-tarifes/titols-principals)|
-| 8 | `24_Descripcion_tipos_billetes_TMB.pdf` | [tarifas TMB](https://www.tmb.cat/es/tarifas-metro-bus-barcelona/precios-titulos-transporte)|
-| 9 | `25_Otros_titulos_integrados_y_sus_tarifas.pdf` | [tarifas TMB](https://www.tmb.cat/es/tarifas-metro-bus-barcelona/precios-titulos-transporte) y [tarifas ATM](https://www.atm.cat/es/titols-tarifes/titols-i-tarifes/titols-principals)|
-| 10 | `31_Condiciones_de_uso_titulos_transporte.pdf` | [Condiciones uso](https://www.tmb.cat/es/tarifas-metro-bus-barcelona/condiciones-uso-billetes) |
-| 11 | `32_Preguntas_frecuentes.pdf` | [FAQ](https://www.tmb.cat/es/atencion-al-cliente/preguntas-frecuentes) |
+| 1 | `01_Municipios_por_zona_y_tarifa_metropolitana.csv` | [mapa-zonas](https://www.tmb.cat/es/tarifas-metro-bus-barcelona/mapa-zonas) |
+| 2 | `11_Intro_sistema_tarifario_integrado.pdf` | [mapa-zonas](https://www.tmb.cat/es/tarifas-metro-bus-barcelona/mapa-zonas) |
+| 3 | `12_sistema_tarifario_integrado.pdf` | [sistema tarifario ATM](https://www.atm.cat/es/titols-tarifes/sistema-de-transport/funcionament-del-sistema-tarifari-integrat) |
+| 4 | `21_Tarifa_metropolitana.pdf` | [mapa-zonas](https://www.tmb.cat/es/tarifas-metro-bus-barcelona/mapa-zonas) |
+| 5 | `22_tarifas_transporte_abonos_normales.csv` | [tarifas TMB](https://www.tmb.cat/es/tarifas-metro-bus-barcelona/precios-titulos-transporte) y [tarifas ATM](https://www.atm.cat/es/titols-tarifes/titols-i-tarifes/titols-principals)|
+| 6 | `23_Descripcion_tipos_billetes_ATM.pdf` | [tarifas ATM](https://www.atm.cat/es/titols-tarifes/titols-i-tarifes/titols-principals)|
+| 7 | `24_Descripcion_tipos_billetes_TMB.pdf` | [tarifas TMB](https://www.tmb.cat/es/tarifas-metro-bus-barcelona/precios-titulos-transporte)|
+| 8 | `25_Otros_titulos_integrados_y_sus_tarifas.pdf` | [tarifas TMB](https://www.tmb.cat/es/tarifas-metro-bus-barcelona/precios-titulos-transporte) y [tarifas ATM](https://www.atm.cat/es/titols-tarifes/titols-i-tarifes/titols-principals)|
+| 9 | `31_Condiciones_de_uso_titulos_transporte.pdf` | [Condiciones uso](https://www.tmb.cat/es/tarifas-metro-bus-barcelona/condiciones-uso-billetes) |
+| 10 | `32_Preguntas_frecuentes.pdf` | [FAQ](https://www.tmb.cat/es/atencion-al-cliente/preguntas-frecuentes) |
 
 ## Proceso de desarrollo
 En este apartado se describe como ha sido el proceso de construcción del proyecto, desde la primera toma de decisón hasta la entrega final.
@@ -106,7 +108,8 @@ Ver estructura del proyecto.
 Se programa la Ingesta y el embeding que se ejecuta mediante: python main.py --prepare
 
 * Se llama a ejecutar_ingesta() de pipeline.py, que su vez llama a las funciones de load.py para crear una lista de documentos cargados.
-  * **TBD: cargar_csv particularizado para los 3 csv del corpus.**
+  * Par los pdfs usamos PyPDFLoader de Langchain que coge el texto y genera el metadato. Para los CSVs lo construimos nosotros.
+* 
 
 
 ## Q&A: Preguntas de ejemplo y resultado esperado

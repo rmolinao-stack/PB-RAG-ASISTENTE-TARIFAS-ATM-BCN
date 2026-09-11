@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-DATA_DIR = Path(__file__).parent / "data"
+DATA_DIR = Path(__file__).parent.parent / "data"
 
 EXTENSIONES_TEXTO = {".txt", ".md"}
 EXTENSIONES_PDF = {".pdf"}
