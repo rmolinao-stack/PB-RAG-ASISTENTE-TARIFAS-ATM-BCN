@@ -19,9 +19,10 @@ from core.index import ejecutar_indexacion
 from core.retriever import recuperar
 from core.context import imprimir_contexto
 
-def preparar_ingesta_y_embeddings() -> None:
+def preparar_ingesta_y_embeddings(solo_ingesta: bool = False) -> None:
     ejecutar_ingesta()
-    ejecutar_embeddings()
+    if not solo_ingesta:
+        ejecutar_embeddings()
 
 def indexar_en_chromadb(recreate: bool) -> None:
     total = ejecutar_indexacion(recreate=recreate)
@@ -40,6 +41,7 @@ def main() -> None:
         """
     )
     parser.add_argument("--prepare", action="store_true", help="Ingesta + embeddings (tiempo estimado de ejecución ~ 10 min)")
+    parser.add_argument("--solo-ingesta", action="store_true", help="Solo realizar la ingesta sin ejecutar embeddings")
     parser.add_argument("--index", action="store_true", help="Indexar en ChromaDB")
     parser.add_argument("--recreate-index", action="store_true", help="Borra la colección de ChromaDB antes de indexar")
     parser.add_argument("--query", type=str, help="Pregunta de prueba que solo ataca al retrieval (recuperación de contexto)")
@@ -63,20 +65,20 @@ def main() -> None:
         return
 
     if args.prepare:
-        print("prepare")
-        preparar_ingesta_y_embeddings()
+        print("Opción prepare seleccionada ...")
+        preparar_ingesta_y_embeddings(solo_ingesta=args.solo_ingesta)
     if args.index:
-        print("index")
+        print("Opción index seleccionada ...")
         indexar_en_chromadb(recreate=args.recreate_index)
     if args.query:
-        print("query")
+        print("Opción query seleccionada ...")
         ejecutar_opcion_query(args.query, args.top_k)
         #_cmd_query(args.query, args.top_k)
     if args.ask:
-        print("ask")
+        print("Opción ask seleccionada ...")
         #_cmd_ask(args.ask, args.top_k)
     if args.eval:
-        print("eval")
+        print("Opción eval seleccionada ...")
         #_cmd_eval()
     
 

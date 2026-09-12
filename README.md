@@ -3,6 +3,18 @@ Asistente de tarifas y abonos para la red ATM de Barcelona - sistema tarifario i
 
 Para calcular las zonas por las que pasa un trayecto redirigirá a https://www.atm.cat/es/titols-tarifes/sistema-de-transport/mapa-de-la-zonificacio
 
+## Decisiones técnicas
+
+* La estructura de ficheros y modularización es similar a la propuesta por la academia, pero el empaquetado de los ficheros se ha modificado, haciendo que cada código fuente se ubique dentro de una carpeta según su especialización.
+* El 90% de la nomenclatura de los ficheros sigue la propuesta de la academía, aunque se han hecho algunos cambios. Por ejemplo: rag_services.py incluye los servicios de backend que se llamarán desde el frontend.
+* Se ha mentenido la estructura *--prepare* donde se genera ingesta y embedding en ficheros, e *--index* donde se genera el indice ChromaDB desde los ficheros para seguir la estructura propuesta por la académia y sobre todo porque esta configuración permite hacer ajustes sobre parámetros de la BBDD ChromaDB sin tener que regenerar el embedding, no obstante en un entorno de producción se considera adecuado unificar los 3 apartados en el *--prepare* para no generar el fichero embeddings.json y que siempre haga borrado de indice (por tanto también dejaría de tener sentido *--recreate-index*)
+
+## Incidencias o peculiaridades del proyecto
+* **Separar ingesta y embedding y unir con index:** Se replanteo la posibilidad de que *--prepare* solo generase ingesta e *--index* hiciera embedding e indexación para evitar generar embeddings.json pero por practicidad se descartó.
+* **Problema con csv municipios:** Se tuvo que reescribir la ingesta de 01_Municipios_por_zona_y_tarifa_metropolitana.csv ya que generaba un chunk por fila, siendo un chunk muy pequeño dando problemas en el retriever (*--query*) con TOP-K muy pequeños. Se rehizo la construcción del chunk. Se sustituyó cargar_csv_municipios (que se ha dejado comentado a nivel didactico) por cargar_csv_municipios_por_zona.
+* 
+* Se tuvo que añadir un sleep de 60 segundos entre lotes de embeddings (embeddear_textos de embed.py) porque saturaba la cuota del free tier de google.
+
 ## Estructura del proyecto
 
 Si bien la modularización de ficheros es bastante similar a la propuesta por la academia, he seguido una paquetización diferente y más acorde con lo hecho en proyectos pasados realizados por mí.
@@ -92,11 +104,14 @@ Además se incluye pdf con la explicación de como funciona el sistema tarifario
 Se genera el main.py con los parametros de entrada esperados según lo solicitado:
 
 ```text
-  python main.py --prepare                  # Ingesta + embeddings
-  python main.py --index                    # Indexar en ChromaDB
-  python main.py --index --recreate-index   # Borra la colección de ChromaDB antes de indexar
-  python main.py --query "pregunta"         # Pregunta de prueba (retrieval + contexto)
-  python main.py --ask "pregunta"           # RAG completo: respuesta generada
+  python main.py --prepare                 #"Ingesta + embeddings (tiempo estimado de ejecución ~ 10 min)"
+  python main.py --solo-ingesta            #"Solo realizar la ingesta sin ejecutar embeddings"
+  python main.py --index                   #"Indexar en ChromaDB"
+  python main.py --recreate-index          #"Borra la colección de ChromaDB antes de indexar"
+  python main.py --query                   #"Pregunta de prueba que solo ataca al retrieval (recuperación de contexto)"
+  python main.py --ask                     #"Pregunta con respusta generada por el modelo (RAG completo)"
+  python main.py --eval                    #"Evaluación del retrieval con preguntas preestablecidas"
+  python main.py --top-k                   #"Sobreescribe TOP-K"
   ```
 
 ### Paso 5: se reestructuran las carpetas por responsabilidad
