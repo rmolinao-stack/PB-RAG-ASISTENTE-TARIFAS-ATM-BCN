@@ -13,11 +13,14 @@ App Streamlit: streamlit run app.py
 """
 
 import argparse
+import json
+
 from core.pipeline import ejecutar_ingesta
 from core.embed import ejecutar_embeddings
 from core.index import ejecutar_indexacion
 from core.retriever import recuperar
 from core.context import imprimir_contexto
+from services.rag_service import responder
 
 def preparar_ingesta_y_embeddings(solo_ingesta: bool = False) -> None:
     ejecutar_ingesta()
@@ -31,6 +34,19 @@ def indexar_en_chromadb(recreate: bool) -> None:
 def ejecutar_opcion_query(pregunta: str, top_k: int | None) -> None:
     chunks = recuperar(pregunta, top_k=top_k)
     imprimir_contexto(chunks)
+
+def ejecutar_opcion_ask(pregunta: str, top_k: int | None) -> None:
+
+    resultado = responder(pregunta, top_k=top_k)
+    print(json.dumps(
+        {
+            "respuesta": resultado.get("respuesta"),
+            "fuentes": resultado.get("fuentes"),
+            "error": resultado.get("error"),
+        },
+        ensure_ascii=False,
+        indent=2,
+    ))
 
 def main() -> None:
     parser = argparse.ArgumentParser(
@@ -76,7 +92,7 @@ def main() -> None:
         #_cmd_query(args.query, args.top_k)
     if args.ask:
         print("Opción ask seleccionada ...")
-        #_cmd_ask(args.ask, args.top_k)
+        ejecutar_opcion_ask(args.ask, args.top_k)
     if args.eval:
         print("Opción eval seleccionada ...")
         #_cmd_eval()

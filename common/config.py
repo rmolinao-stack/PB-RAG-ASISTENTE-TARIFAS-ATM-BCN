@@ -28,3 +28,10 @@ INDEX_BATCH_SIZE = 100
 # --- Retrieval---
 TOP_K = 8 # Número de resultados a recuperar en la búsqueda (retrieval)
 
+# --- Generación ---
+#GEMINI_MODEL = "gemini-3.1-flash-lite"
+#GEMINI_MODEL ="gemini-3-flash-preview"
+GEMINI_MODEL ="gemini-3.1-flash-lite-preview"
+
+GENERATION_TEMPERATURE = 0.2
+
