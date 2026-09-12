@@ -94,6 +94,7 @@ def main() -> None:
         print("Opción ask seleccionada ...")
         ejecutar_opcion_ask(args.ask, args.top_k)
     if args.eval:
+        
         print("Opción eval seleccionada ...")
         #_cmd_eval()
     
