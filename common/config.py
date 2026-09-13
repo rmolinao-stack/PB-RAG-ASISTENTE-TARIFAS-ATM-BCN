@@ -26,7 +26,7 @@ COLLECTION_NAME = "tarifas_atm_bcn"
 INDEX_BATCH_SIZE = 100
 
 # --- Retrieval---
-TOP_K = 5 # Número de resultados a recuperar en la búsqueda (retrieval)
+TOP_K = 1 # Número de resultados a recuperar en la búsqueda (retrieval)
 
 # --- Generación ---
 #GEMINI_MODEL = "gemini-3.1-flash-lite"
@@ -34,4 +34,7 @@ TOP_K = 5 # Número de resultados a recuperar en la búsqueda (retrieval)
 GEMINI_MODEL ="gemini-3.1-flash-lite-preview"
 
 GENERATION_TEMPERATURE = 0.2
+
+# --- Evaluación ---
+QUERIES_EVAL_JSON = Path(__file__).parent.parent / "queries" / "preguntas_eval.json"
 

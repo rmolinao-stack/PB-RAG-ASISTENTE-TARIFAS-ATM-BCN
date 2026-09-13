@@ -66,7 +66,6 @@ Todos los datos son públicos.
 | 7 | `24_Descripcion_tipos_billetes_TMB.pdf` | [tarifas TMB](https://www.tmb.cat/es/tarifas-metro-bus-barcelona/precios-titulos-transporte)| SI |
 | 8 | `25_Otros_titulos_integrados_y_sus_tarifas.pdf` | [tarifas TMB](https://www.tmb.cat/es/tarifas-metro-bus-barcelona/precios-titulos-transporte) y [tarifas ATM](https://www.atm.cat/es/titols-tarifes/titols-i-tarifes/titols-principals)| SI |
 | 9 | `31_Condiciones_de_uso_titulos_transporte.pdf` | [Condiciones uso](https://www.tmb.cat/es/tarifas-metro-bus-barcelona/condiciones-uso-billetes) | SI |
-| 10 | `32_Preguntas_frecuentes.pdf` | [FAQ](https://www.tmb.cat/es/atencion-al-cliente/preguntas-frecuentes) | SI |
 
 
 ## Proceso de desarrollo
@@ -155,17 +154,29 @@ Se programa el prompt con todos los controles de seguiridad.
 
 Se programa la busqueda de poblaciones según la pregunta, a través de 01_Municipios_por_zona_y_tarifa_metropolitana.csv y se inyecta en el prompt.
 
+### Paso 10: Programación opción --eval
+
+Se genera el fichero preguntas_eval.json.
+
+Se programa las funciones de lectura y salida por terminal del resultado.
+
 ## Q&A: Preguntas de ejemplo y resultado esperado
 
 En este apartado se describe una serie de preguntas a realizar al asistente y el resultado esperado.
 
 | Nº | Pregunta | Respuesta esperada |
 |---------|-----------|--------------|
-| 1 | TBD | TBD|
-| 2 | TBD | TBD|
-| 3 | TBD | TBD|
-| 4 | TBD | TBD|
-| 5 | TBD | TBD|
+| 1 | ¿Qué zonas cubre el abono mensual y cual es su tarifa? | Debería dar información sobre T-usual y sus tarifas bonificadas.|
+| 2 | ¿Cual es el billete de 10 viajes integrado? | Debería dar información sobre T-casual y T-4.|
+| 3 | ¿Puedo usar un mismo título en metro y cercanías? | Debería responder que sí y explicar el sistema de integración tarifaria de la red ATM.|
+| 4 | ¿Cual es el billete para menores de 16 años que ofreceis y como funciona? | Debería dar información sobre el abono especial T-16 de un solo pago y sus condiciones de uso.|
+| 5 | ¿A que zona pertenece Alella? | Debería indicando zona y sector.|
+
+## --eval: Evaluación de preguntas_eval.json con top-k=5 y top-k=1
+
+Resulado en carpeta querys:
+- preguntas_resultado_topk5.txt
+- preguntas_resultado_topk1.txt
 
 ## Incidencias o peculiaridades del proyecto
 * **Separar ingesta y embedding y unir con index:** Se replanteo la posibilidad de que *--prepare* solo generase ingesta e *--index* hiciera embedding e indexación para evitar generar embeddings.json pero por practicidad se descartó.

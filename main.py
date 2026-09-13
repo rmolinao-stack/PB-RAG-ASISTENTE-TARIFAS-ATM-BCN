@@ -21,6 +21,8 @@ from core.index import ejecutar_indexacion
 from core.retriever import recuperar
 from core.context import imprimir_contexto
 from services.rag_service import responder
+from core.eval_retrieval import ejecutar_evaluacion
+
 
 def preparar_ingesta_y_embeddings(solo_ingesta: bool = False) -> None:
     ejecutar_ingesta()
@@ -94,9 +96,8 @@ def main() -> None:
         print("Opción ask seleccionada ...")
         ejecutar_opcion_ask(args.ask, args.top_k)
     if args.eval:
-        
         print("Opción eval seleccionada ...")
-        #_cmd_eval()
+        ejecutar_evaluacion()
     
 
 if __name__ == "__main__":
