@@ -3,8 +3,8 @@
 from pathlib import Path
 
 # --- Ingesta y chunking ---
-CHUNK_SIZE = 1000 
-CHUNK_OVERLAP = 150 # Aplicamos un 15% del tamaño del chunk.
+CHUNK_SIZE = 2000
+CHUNK_OVERLAP = 300 # Aplicamos un 15% del tamaño del chunk.
 
 DATA_DIR = Path(__file__).parent.parent / "data"
 OUTPUT_DIR = Path(__file__).parent.parent / "output"
@@ -26,7 +26,7 @@ COLLECTION_NAME = "tarifas_atm_bcn"
 INDEX_BATCH_SIZE = 100
 
 # --- Retrieval---
-TOP_K = 1 # Número de resultados a recuperar en la búsqueda (retrieval)
+TOP_K = 5 # Número de resultados a recuperar en la búsqueda (retrieval)
 
 # --- Generación ---
 #GEMINI_MODEL = "gemini-3.1-flash-lite"
