@@ -91,16 +91,16 @@ def ejecutar_ingesta() -> tuple[list[Document], Path, dict]:
 
     # RMO: Para depurar que nos devuelve cada documento limpiado.
     #for c in limpios:
-    #        print(c)
-    #        input()
+    #    print(c)
+    #    input()
 
     chunks = fragmentar_documentos(limpios)
     print(f"  Chunks generados: {len(chunks)}")
 
     #RMO: Para depurar que nos devuelve cada chunk.
-    for c in chunks:
-            print(c)
-            input()
+    #for c in chunks:
+    #    print(c)
+    #    input()
 
     stats = calcular_stats_ingesta(crudos, limpios, chunks)
     ruta = guardar_chunks_json(chunks, CHUNKS_JSON, stats)

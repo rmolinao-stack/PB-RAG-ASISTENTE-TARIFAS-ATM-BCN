@@ -6,14 +6,12 @@ Para calcular las zonas por las que pasa un trayecto redirigirá a https://www.a
 ## Decisiones técnicas
 
 * La estructura de ficheros y modularización es similar a la propuesta por la academia, pero el empaquetado de los ficheros se ha modificado, haciendo que cada código fuente se ubique dentro de una carpeta según su especialización.
-* El 90% de la nomenclatura de los ficheros sigue la propuesta de la academía, aunque se han hecho algunos cambios. Por ejemplo: rag_services.py incluye los servicios de backend que se llamarán desde el frontend.
-* Se ha mentenido la estructura *--prepare* donde se genera ingesta y embedding en ficheros, e *--index* donde se genera el indice ChromaDB desde los ficheros para seguir la estructura propuesta por la académia y sobre todo porque esta configuración permite hacer ajustes sobre parámetros de la BBDD ChromaDB sin tener que regenerar el embedding, no obstante en un entorno de producción se considera adecuado unificar los 3 apartados en el *--prepare* para no generar el fichero embeddings.json y que siempre haga borrado de indice (por tanto también dejaría de tener sentido *--recreate-index*)
 
-## Incidencias o peculiaridades del proyecto
-* **Separar ingesta y embedding y unir con index:** Se replanteo la posibilidad de que *--prepare* solo generase ingesta e *--index* hiciera embedding e indexación para evitar generar embeddings.json pero por practicidad se descartó.
-* **Problema con csv municipios:** Se tuvo que reescribir la ingesta de 01_Municipios_por_zona_y_tarifa_metropolitana.csv ya que generaba un chunk por fila, siendo un chunk muy pequeño dando problemas en el retriever (*--query*) con TOP-K muy pequeños. Se rehizo la construcción del chunk. Se sustituyó cargar_csv_municipios (que se ha dejado comentado a nivel didactico) por cargar_csv_municipios_por_zona.
-* 
-* Se tuvo que añadir un sleep de 60 segundos entre lotes de embeddings (embeddear_textos de embed.py) porque saturaba la cuota del free tier de google.
+* El 90% de la nomenclatura de los ficheros sigue la propuesta de la academía, aunque se han hecho algunos cambios. Por ejemplo: rag_services.py incluye los servicios de backend que se llamarán desde el frontend.
+
+* El documento *01_Municipios_por_zona_y_tarifa_metropolitana.csv* NO se he incluido en el embedding y por tanto NO se ha incluido en el la BBDD vectorial. El motivo es que al ser una lista de municipios, se tratara como se tratara, generaba mucho ruido. Lo que se ha hecho es tratar en la fase de prompt, analizando si la pregunta contiene algún municipio de la lista (con cierta flexibilidad) e inyectando la información en el prompt para reducir el impacto en la fase de embedding. Para más detalle ver apartado de incidencias y peculiaridades del proyecto.
+
+* Se ha mentenido la estructura *--prepare* donde se genera ingesta y embedding en ficheros, e *--index* donde se genera el indice ChromaDB desde los ficheros para seguir la estructura propuesta por la académia y sobre todo porque esta configuración permite hacer ajustes sobre parámetros de la BBDD ChromaDB sin tener que regenerar el embedding, no obstante en un entorno de producción se considera adecuado unificar los 3 apartados en el *--prepare* para no generar el fichero embeddings.json y que siempre haga borrado de indice (por tanto también dejaría de tener sentido *--recreate-index*)
 
 ## Estructura del proyecto
 
@@ -57,18 +55,19 @@ Descripción de los ficheros y documentos incluidos en el corpues y de donde se 
 
 Todos los datos son públicos.
 
-| Nº | Fichero | Fuente |
-|---------|-----------|--------------|
-| 1 | `01_Municipios_por_zona_y_tarifa_metropolitana.csv` | [mapa-zonas](https://www.tmb.cat/es/tarifas-metro-bus-barcelona/mapa-zonas) |
-| 2 | `11_Intro_sistema_tarifario_integrado.pdf` | [mapa-zonas](https://www.tmb.cat/es/tarifas-metro-bus-barcelona/mapa-zonas) |
-| 3 | `12_sistema_tarifario_integrado.pdf` | [sistema tarifario ATM](https://www.atm.cat/es/titols-tarifes/sistema-de-transport/funcionament-del-sistema-tarifari-integrat) |
-| 4 | `21_Tarifa_metropolitana.pdf` | [mapa-zonas](https://www.tmb.cat/es/tarifas-metro-bus-barcelona/mapa-zonas) |
-| 5 | `22_tarifas_transporte_abonos_normales.csv` | [tarifas TMB](https://www.tmb.cat/es/tarifas-metro-bus-barcelona/precios-titulos-transporte) y [tarifas ATM](https://www.atm.cat/es/titols-tarifes/titols-i-tarifes/titols-principals)|
-| 6 | `23_Descripcion_tipos_billetes_ATM.pdf` | [tarifas ATM](https://www.atm.cat/es/titols-tarifes/titols-i-tarifes/titols-principals)|
-| 7 | `24_Descripcion_tipos_billetes_TMB.pdf` | [tarifas TMB](https://www.tmb.cat/es/tarifas-metro-bus-barcelona/precios-titulos-transporte)|
-| 8 | `25_Otros_titulos_integrados_y_sus_tarifas.pdf` | [tarifas TMB](https://www.tmb.cat/es/tarifas-metro-bus-barcelona/precios-titulos-transporte) y [tarifas ATM](https://www.atm.cat/es/titols-tarifes/titols-i-tarifes/titols-principals)|
-| 9 | `31_Condiciones_de_uso_titulos_transporte.pdf` | [Condiciones uso](https://www.tmb.cat/es/tarifas-metro-bus-barcelona/condiciones-uso-billetes) |
-| 10 | `32_Preguntas_frecuentes.pdf` | [FAQ](https://www.tmb.cat/es/atencion-al-cliente/preguntas-frecuentes) |
+| Nº | Fichero | Fuente | ¿Embedding?
+|---------|-----------|--------------|--|
+| 1 | `01_Municipios_por_zona_y_tarifa_metropolitana.csv` | [mapa-zonas](https://www.tmb.cat/es/tarifas-metro-bus-barcelona/mapa-zonas) | NO |
+| 2 | `11_Intro_sistema_tarifario_integrado.pdf` | [mapa-zonas](https://www.tmb.cat/es/tarifas-metro-bus-barcelona/mapa-zonas) | SI |
+| 3 | `12_sistema_tarifario_integrado.pdf` | [sistema tarifario ATM](https://www.atm.cat/es/titols-tarifes/sistema-de-transport/funcionament-del-sistema-tarifari-integrat) | SI |
+| 4 | `21_Tarifa_metropolitana.pdf` | [mapa-zonas](https://www.tmb.cat/es/tarifas-metro-bus-barcelona/mapa-zonas) | SI |
+| 5 | `22_tarifas_transporte_abonos_normales.csv` | [tarifas TMB](https://www.tmb.cat/es/tarifas-metro-bus-barcelona/precios-titulos-transporte) y [tarifas ATM](https://www.atm.cat/es/titols-tarifes/titols-i-tarifes/titols-principals)| SI |
+| 6 | `23_Descripcion_tipos_billetes_ATM.pdf` | [tarifas ATM](https://www.atm.cat/es/titols-tarifes/titols-i-tarifes/titols-principals)| SI |
+| 7 | `24_Descripcion_tipos_billetes_TMB.pdf` | [tarifas TMB](https://www.tmb.cat/es/tarifas-metro-bus-barcelona/precios-titulos-transporte)| SI |
+| 8 | `25_Otros_titulos_integrados_y_sus_tarifas.pdf` | [tarifas TMB](https://www.tmb.cat/es/tarifas-metro-bus-barcelona/precios-titulos-transporte) y [tarifas ATM](https://www.atm.cat/es/titols-tarifes/titols-i-tarifes/titols-principals)| SI |
+| 9 | `31_Condiciones_de_uso_titulos_transporte.pdf` | [Condiciones uso](https://www.tmb.cat/es/tarifas-metro-bus-barcelona/condiciones-uso-billetes) | SI |
+| 10 | `32_Preguntas_frecuentes.pdf` | [FAQ](https://www.tmb.cat/es/atencion-al-cliente/preguntas-frecuentes) | SI |
+
 
 ## Proceso de desarrollo
 En este apartado se describe como ha sido el proceso de construcción del proyecto, desde la primera toma de decisón hasta la entrega final.
@@ -146,6 +145,15 @@ Programación opción --query que devuelve los chunks guardados en BBDD por simi
 
 Básicamente se usa el mismo modelo de embedding que se usó para codificar chromaDB y devuelve los vectores con más similitud.
 
+El documento 01_Municipios_por_zona_y_tarifa_metropolitana.csv no está incluido
+
+### Paso 9: Programación opción --ask (Prompt + inlusión municipios)
+
+Programación de opción --ask
+
+Se programa el prompt con todos los controles de seguiridad.
+
+Se programa la busqueda de poblaciones según la pregunta, a través de 01_Municipios_por_zona_y_tarifa_metropolitana.csv y se inyecta en el prompt.
 
 ## Q&A: Preguntas de ejemplo y resultado esperado
 
@@ -158,6 +166,17 @@ En este apartado se describe una serie de preguntas a realizar al asistente y el
 | 3 | TBD | TBD|
 | 4 | TBD | TBD|
 | 5 | TBD | TBD|
+
+## Incidencias o peculiaridades del proyecto
+* **Separar ingesta y embedding y unir con index:** Se replanteo la posibilidad de que *--prepare* solo generase ingesta e *--index* hiciera embedding e indexación para evitar generar embeddings.json pero por practicidad se descartó.
+* **Problema con csv municipios:** 
+  * Se tuvo que reescribir la ingesta de 01_Municipios_por_zona_y_tarifa_metropolitana.csv ya que generaba muchos chunks (363 de los 441 generados) y muy pequeños y en el retriever solo devolvía municipios y municipios. 
+  * Se sustituyó cargar_csv_municipios (que se ha dejado comentado a nivel didactico) por cargar_csv_municipios_por_zona, agrupando los municipios en un solo documento por zona. 
+  * No obstante esto hacía que cada vez que se preguntaba sobre municipios, se devolvían los chunks de este fichero por delente de los demás, haciendo que tuvier que poner un top-k muy grande para que se tuviera en cuenta los otros documentos.
+  * Además para no perder contexto sobre zonas, sectores, etc.. se tenía que poner un chunk_size muy grande para no partir la información (ya que sino el LLM no sabía muy bien que hacer con la información partida).
+  * La conclusión fué que este csv, se tratara como se tratara, generaba mucho ruido, por tanto **se decidió sacar este documento del embedding y revisar si la pregunta contenía poblaciones, buscarlo en el CSV con Pandas e inyectar la inforamción en el prompt**.
+  * Esta estrategía función bien, y me permitió reducir el top-k, el chunk_size y no se generaba ruido.
+* Se tuvo que añadir un sleep de 60 segundos entre lotes de embeddings (embeddear_textos de embed.py) porque saturaba la cuota del free tier de google.
 
 ## Cosas a mejorar del sistema
 

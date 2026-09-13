@@ -22,27 +22,27 @@ def fila_a_texto_municipios(fila) -> str | None:
     return "\n".join(lineas)
 
 
-#def cargar_csv_municipios(ruta: Path) -> list[Document]:
-#    """Lee el CSV de eventos: un Document por fila con título válido."""
-#    df = pd.read_csv(ruta, sep=";", encoding="UTF-8", dtype=str)
-#    documentos: list[Document] = []
-#
-#    for _, fila in df.iterrows():
-#        texto = fila_a_texto_municipios(fila)
-#        if texto is None:
-#            continue
-#
-#        metadata: dict = {
-#            "source": str(ruta),
-#            "tipo": "zona_tarifaria",  
-#            "Poblacion": valor_celda(fila, 'Poblacion'),
-#            "Zona Tarifaria": valor_celda(fila, 'Zona Tarifaria'),
-#            "Sector": valor_celda(fila, 'Sector') or 'Sin sector',
-#            "Tarifa Metropolitana": valor_celda(fila, 'Tarifa Metropolitana')
-#        }
-#        documentos.append(Document(page_content=texto, metadata=metadata))
-#
-#    return documentos
+def cargar_csv_municipios(ruta: Path) -> list[Document]:
+    """Lee el CSV de eventos: un Document por fila con título válido."""
+    df = pd.read_csv(ruta, sep=";", encoding="UTF-8", dtype=str)
+    documentos: list[Document] = []
+
+    for _, fila in df.iterrows():
+        texto = fila_a_texto_municipios(fila)
+        if texto is None:
+            continue
+
+        metadata: dict = {
+            "source": str(ruta),
+            "tipo": "zona_tarifaria",  
+            "Poblacion": valor_celda(fila, 'Poblacion'),
+            "Zona Tarifaria": valor_celda(fila, 'Zona Tarifaria'),
+            "Sector": valor_celda(fila, 'Sector') or 'Sin sector',
+            "Tarifa Metropolitana": valor_celda(fila, 'Tarifa Metropolitana')
+        }
+        documentos.append(Document(page_content=texto, metadata=metadata))
+
+    return documentos
 
 def cargar_csv_municipios_por_zona(ruta: Path) -> list[Document]:
     """Lee el CSV de municipios agrupándolos por Zona Tarifaria y por Tarifa Metropolitana.
@@ -173,7 +173,11 @@ def cargar_archivo(ruta: Path) -> list[Document]:
 
     if sufijo in EXTENSIONES_CSV:
         if (ruta.name == "01_Municipios_por_zona_y_tarifa_metropolitana.csv"):
-            return cargar_csv_municipios_por_zona(ruta)
+            #return cargar_csv_municipios_por_zona(ruta)
+            #return cargar_csv_municipios(ruta)
+            # RMO: Finalmente no cargamos este CSV porque se maneja de manera especial en el prompt.
+            # El motivo es que genera mucho ruido lo trates como lo trate y hace que la información relevante se diluya.
+            print(f"[omitido] CSV especial: {ruta.name}")
         elif (ruta.name == "22_tarifas_transporte_abonos_normales.csv"):
             return cargar_csv_tarifas(ruta)
         else:
@@ -197,6 +201,6 @@ def cargar_documentos() -> list[Document]:
             print(f"  Cargado: {ruta.name} ({len(docs)} documento(s))")
             documentos.extend(docs)
         elif ruta.suffix:
-            print(f"  [omitido] extensión no soportada: {ruta.name}")
+            print(f"  [omitido] extensión/fichero no soportada: {ruta.name}")
 
     return documentos
