@@ -5,6 +5,7 @@
       "id": "q1",
       "texto": "¿Qué zonas cubre el abono mensual y cual es su tarifa?",
       "respuesta_esperada": "Debería dar información sobre T-usual y sus tarifas bonificadas.", 
+      "deberia_abstenerse": false,
       "notas": ""
     },
     {
@@ -58,7 +59,7 @@
     },
     {
     "id": "q9",
-      "texto": "¿Que billete debo comprar para ir de Alpens a Alella?",
+      "texto": "¿Como puedo ir de Alpens a Alella?",
       "respuesta_esperada": "Debe abstenerse de dar una ruta y únicamente dar la información de la que dispone y redirigir a la web de ATM.",
       "deberia_abstenerse": true,
       "notas": ""
@@ -67,13 +68,20 @@
     "id": "q10",
       "texto": "¿Como puedo obtener una factura de mi billete comprado?",
       "respuesta_esperada": "Debe devolver información de como obtenerla.",
-      "deberia_abstenerse": true,
+      "deberia_abstenerse": false,
       "notas": ""
     },
     {
     "id": "q11",
       "texto": "¿Cuales son las condiciones de devolución de un billete?",
       "respuesta_esperada": "Debe devolver información sobre las condiciones de devolución de un billete.",
+      "deberia_abstenerse": false,
+      "notas": ""
+    },
+    {
+    "id": "q12",
+      "texto": "¿Cual es la capital de Francia?",
+      "respuesta_esperada": "Debería indicar que no tiene esta información.",
       "deberia_abstenerse": true,
       "notas": ""
     }

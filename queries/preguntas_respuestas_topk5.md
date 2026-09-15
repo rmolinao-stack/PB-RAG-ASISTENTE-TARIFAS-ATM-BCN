@@ -108,22 +108,16 @@ El contexto no proporciona el número exacto de sectores tarifarios que separan 
 
 ============================================================
 
-[q9] ¿Que billete debo comprar para ir de Alpens a Alella?
+[q9] ¿Como puedo ir de Alpens a Alella?
   deberia_abstenerse=True
-  respuesta: Para determinar el billete necesario para ir de Alpens a Alella, debes contar el número de sectores tarifarios por los que transitas, ya que el sistema tarifario integrado requiere que el título cubra tantas zonas como sectores se atraviesen (Fuente: 11_Intro_sistema_tarifario_integrado.pdf y 31_Condiciones_de_uso_titulos_transporte.pdf).
-
-Según la información geográfica proporcionada:
-*   **Alpens:** Zona 6, Sector H.
-*   **Alella:** Zona 2, Sector E.
-
-El contexto no proporciona el número exacto de sectores tarifarios que separan el sector H del sector E. Para calcular el número de zonas necesario, puedes utilizar elcontador de zonas o el mapa de zonificación disponible en la web de la ATM (Fuente: 11_Intro_sistema_tarifario_integrado.pdf).
-  fuentes: ['11_Intro_sistema_tarifario_integrado.pdf', '11_Intro_sistema tarifario integrado.pdf', '31_Condiciones_de_uso_titulos_transporte.pdf']
+  respuesta: El contexto proporcionado no contiene información sobre cómo realizar un desplazamiento entre Alpens y Alella, ni tampoco ofrece información sobre rutas o medios de transporte específicos para conectar ambos municipios.\n\nDe acuerdo con la información geográfica disponible:\n*   **Alpens** pertenece a la Zona 6, Sector H.\n***Alella** pertenece a la Zona 2, Sector E.\n\nEl sistema tarifario integrado permite utilizar diferentes medios de transporte (metro, autobuses, tranvía, Ferrocarrils de la Generalitat de Catalunya y Rodalies de Catalunya) para realizar un desplazamiento (Fuente: *11_Intro_sistema_tarifario_integrado.pdf*), pero no dispongo de información sobre las rutas específicas para este trayecto.
+  fuentes: ['23_Descripcion_tipos_billetes_ATM.pdf', '11_Intro_sistema_tarifario_integrado.pdf', '12_sistema_tarifario_integrado.pdf']
 
 
 ============================================================
 
 [q10] ¿Como puedo obtener una factura de mi billete comprado?
-  deberia_abstenerse=True
+  deberia_abstenerse=False
   respuesta: Para obtener una factura de tus títulos de transporte, el procedimiento varía según el tipo de título y el método de compra:
 
 **Facturas simplificadas:**
@@ -140,7 +134,7 @@ El contexto no proporciona el número exacto de sectores tarifarios que separan 
 ============================================================
 
 [q11] ¿Cuales son las condiciones de devolución de un billete?
-  deberia_abstenerse=True
+  deberia_abstenerse=False
   respuesta: Las condiciones de devolución de los títulos de transporte, según el documento *31_Condiciones_de_uso_titulos_transporte.pdf*, son las siguientes:
 
 *   **Plazo:** Todos los títulos integrados de la ATM, así como el billete sencillo de metro y el billete sencillo aeropuerto, pueden devolverse dentro de las 24 horassiguientes al momento de la compra.
@@ -151,3 +145,10 @@ El contexto no proporciona el número exacto de sectores tarifarios que separan 
     *   **Compras en canales presenciales (máquinas expendedoras o Punts TMB):** Se debe acudir a un Punt TMB con el título de transporte y el recibo de compra.
     *   **Compras en holabarcelona.com o app Hola Barcelona:** Se debe consultar el apartado de "Preguntas frecuentes" en dichos canales.
   fuentes: ['31_Condiciones_de_uso_titulos_transporte.pdf']
+
+  ============================================================
+
+[q12] ¿Cual es la capital de Francia?
+  deberia_abstenerse=False
+  respuesta: El contexto proporcionado no contiene información sobre la capital de Francia. Como asistente, solo puedo responder preguntas sobre tarifas y abonos de la red ATM de Barcelona basándome en la información facilitada.
+  fuentes: ['21_Tarifa_metropolitana.pdf', '23_Descripcion_tipos_billetes_ATM.pdf','12_sistema_tarifario_integrado.pdf']

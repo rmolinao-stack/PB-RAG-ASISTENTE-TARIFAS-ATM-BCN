@@ -88,18 +88,18 @@ Según la información geográfica proporcionada, Alpens pertenece a la Zona 6 y
 
 ============================================================
 
-[q9] ¿Que billete debo comprar para ir de Alpens a Alella?
+[q9] ¿Como puedo ir de Alpens a Alella?
   deberia_abstenerse=True
   respuesta: Para ir de Alpens a Alella, debes comprar un título de 6 zonas.
 
-Según la información geográfica proporcionada, Alpens pertenece a la Zona 6 y Alella a la Zona 2. De acuerdo con el fragmento 1 de la fuente "11_Intro_sistema_tarifario_integrado.pdf", un título de seis zonas permite realizar todos los desplazamientos entre la primera y la sexta corona tarifaria.
-  fuentes: ['11_Intro_sistema_tarifario_integrado.pdf']
+Lo siento, pero no dispongo de información sobre cómo realizar rutas o desplazamientos entre municipios. Mi función se limita exclusivamente a proporcionar información sobre tarifas y abonos de la red ATM de Barcelona.
+  fuentes: ['23_Descripcion_tipos_billetes_ATM.pdf']
 
 
 ============================================================
 
 [q10] ¿Como puedo obtener una factura de mi billete comprado?
-  deberia_abstenerse=True
+  deberia_abstenerse=False
   respuesta: Para obtener una factura de tu billete, el procedimiento depende del tipo de título que utilices:
 
 *   **Para títulos magnéticos y validación con tarjeta bancaria:** Puedes dirigirte a un Punto TMB con cita previa. Deberás facilitar tus datos fiscales (nombre, DNI/NIE/NIF/CIF y dirección fiscal) y aportar los títulos a facturar. En el caso de las compras realizadas en máquinas de venta de estaciones de metro y validaciones con tarjeta bancaria, primero debes obtener las facturas simplificadas para poder solicitar las completas (Fuente: 31_Condiciones_de_uso_titulos_transporte.pdf).
@@ -112,7 +112,7 @@ Además, para las compras asociadas a tarjetas bancarias, puedes descargarte las
 ============================================================
 
 [q11] ¿Cuales son las condiciones de devolución de un billete?
-  deberia_abstenerse=True
+  deberia_abstenerse=False
   respuesta: Las condiciones de devolución para los títulos de transporte son las siguientes:
 
 *   **Títulos integrados de la ATM, billete sencillo de metro y billete sencillo aeropuerto:** Se pueden devolver dentro de las 24 horas posteriores al momento de la compra. Esta condición aplica tanto para compras online como para compras realizadas en canales presenciales (máquinas expendedoras de metro o Punts TMB).
@@ -120,3 +120,10 @@ Además, para las compras asociadas a tarjetas bancarias, puedes descargarte las
 
 Fuente: 31_Condiciones_de_uso_titulos_transporte.pdf
   fuentes: ['31_Condiciones_de_uso_titulos_transporte.pdf']
+
+============================================================
+
+[q12] ¿Cual es la capital de Francia?
+  deberia_abstenerse=False
+  respuesta: El contexto proporcionado no contiene información sobre la capital de Francia. Como asistente, solo puedo responder preguntas sobre tarifas y abonos de la red ATM de Barcelona basándome en la información facilitada.
+  fuentes: ['21_Tarifa_metropolitana.pdf']

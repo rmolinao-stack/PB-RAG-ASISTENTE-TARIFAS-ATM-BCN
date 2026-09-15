@@ -2,13 +2,17 @@
 
 En este apartado se describen los 4 experimentos u observaciones solicitadas por la academia.
 
+Modelos utilizados para generar el informe:
+* EMBEDDING_MODEL = "gemini-embedding-2"
+* GEMINI_MODEL ="gemini-3.1-flash-lite-preview"
+
 ## Chunking
 
 | Configuración| Chunks Generados | Cohesión Semántica | Resultado o Problema Detectado | 
 |-|-|-|-|
-|Opción A: Size 500 / Overlap 50| 161 | Baja |Corta reglas de transbordo e incompatibilidades entre dos fragmentos distintos.|
-|Opción B (Elegida): Size 1000 / Overlap 150| 93 |Óptima |Equilibrada. Mantiene las condiciones completas de títulos (ej. T-usual, T-casual) en un solo bloque.|
-|Opción C: Size 2000 / Overlap 300| 63 | Excesiva | Sin mejora de precisión; incrementa el uso de tokens/latencia y añade ruido al prompt.|
+|Opción A: Size 500 / Overlap 50| 157 | Baja |Corta reglas de transbordo e incompatibilidades entre dos fragmentos distintos.|
+|Opción B (Elegida): Size 1000 / Overlap 150| 91 |Óptima |Equilibrada. Mantiene las condiciones completas de títulos (ej. T-usual, T-casual) en un solo bloque.|
+|Opción C: Size 2000 / Overlap 300| 62 | Excesiva | Sin mejora de precisión y duplicamos el número de información que le pasamos al modelo a riesgo de aumentar el coste.|
 
 **Nota sobre datos estructurados**: Para el CSV de municipios se descartó la fragmentación por fila ya que generaba más de 300 chunks (micro-chunks) y se implementó una extracción determinista previa mediante Pandas, evitando la saturación del vector store.
 
@@ -19,12 +23,11 @@ En este apartado se describen los 4 experimentos u observaciones solicitadas por
 
 ```text
 --- Resumen ingesta ---
-  Documentos cargados:      66
-  Tras limpieza:            59
-  Chunks generados:         161
+  Documentos cargados:      65
+  Tras limpieza:            58
+  Chunks generados:         157
   Chunks por fuente:
-    11_Intro_sistema tarifario integrado.pdf: 5
-    11_Intro_sistema_tarifario_integrado.pdf: 4
+    11_Intro_sistema_tarifario_integrado.pdf: 5
     12_sistema_tarifario_integrado.pdf: 23
     21_Tarifa_metropolitana.pdf: 5
     22_tarifas_transporte_abonos_normales.csv: 15
@@ -37,11 +40,10 @@ En este apartado se describen los 4 experimentos u observaciones solicitadas por
 * CHUNK_OVERLAP = 150
 ```text
 --- Resumen ingesta ---
-  Documentos cargados:      66
-  Tras limpieza:            59
-  Chunks generados:         93
+  Documentos cargados:      65
+  Tras limpieza:            58
+  Chunks generados:         91
   Chunks por fuente:
-    11_Intro_sistema tarifario integrado.pdf: 2
     11_Intro_sistema_tarifario_integrado.pdf: 2
     12_sistema_tarifario_integrado.pdf: 13
     21_Tarifa_metropolitana.pdf: 3
@@ -55,11 +57,10 @@ En este apartado se describen los 4 experimentos u observaciones solicitadas por
 * CHUNK_OVERLAP = 300
 ```text
 --- Resumen ingesta ---
-  Documentos cargados:      66
-  Tras limpieza:            59
-  Chunks generados:         63
+  Documentos cargados:      65
+  Tras limpieza:            58
+  Chunks generados:         62
   Chunks por fuente:
-    11_Intro_sistema tarifario integrado.pdf: 1
     11_Intro_sistema_tarifario_integrado.pdf: 1
     12_sistema_tarifario_integrado.pdf: 8
     21_Tarifa_metropolitana.pdf: 1
