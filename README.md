@@ -130,7 +130,6 @@ Todos los datos son públicos.
 | 8 | `25_Otros_titulos_integrados_y_sus_tarifas.pdf` | [tarifas TMB](https://www.tmb.cat/es/tarifas-metro-bus-barcelona/precios-titulos-transporte) y [tarifas ATM](https://www.atm.cat/es/titols-tarifes/titols-i-tarifes/titols-principals)| SI |
 | 9 | `31_Condiciones_de_uso_titulos_transporte.pdf` | [Condiciones uso](https://www.tmb.cat/es/tarifas-metro-bus-barcelona/condiciones-uso-billetes) | SI |
 
-
 ## Proceso de desarrollo
 En este apartado se describe como ha sido el proceso de construcción del proyecto, desde la primera toma de decisón hasta la entrega final.
 
@@ -238,6 +237,10 @@ En este apartado se describe una serie de preguntas a realizar al asistente y el
 
 ## Q&A --eval: Evaluación de preguntas_eval.json con top-k=5 y top-k=1
 
+Modelos utilizados:
+* EMBEDDING_MODEL = "gemini-embedding-2"
+* GEMINI_MODEL ="gemini-3.1-flash-lite-preview"
+
 Resultado en carpeta querys:
 - preguntas_resultado_topk5.txt
 - preguntas_resultado_topk1.txt
@@ -257,7 +260,11 @@ Resultado en carpeta querys:
 
 Ver [informe_resultados](./entregables/informe_resultados.md#fallos-y-mejoras)
 
-## Experimentos opciones: Robustez
+## Experimentos opciones: Robustez 
+
+Modelos utilizados para generar el informe:
+* EMBEDDING_MODEL = "gemini-embedding-2"
+* GEMINI_MODEL ="gemini-3.1-flash-lite-preview"
 
 ### Pregunta vacía / basura — --ask " " (o equivalente): ¿devolvéis error sin llamar al LLM?
 
