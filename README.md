@@ -262,7 +262,7 @@ Ver [informe_resultados](./entregables/informe_resultados.md#fallos-y-mejoras)
 
 ## Experimentos opciones: Robustez 
 
-Modelos utilizados para generar el informe:
+Modelos utilizados:
 * EMBEDDING_MODEL = "gemini-embedding-2"
 * GEMINI_MODEL ="gemini-3.1-flash-lite-preview"
 
